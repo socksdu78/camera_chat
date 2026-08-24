@@ -13,12 +13,12 @@ Vérifiés dans cet ordre — quand une pose peut correspondre à plusieurs, le 
 | # | Geste | Comment le déclencher |
 |---|---|---|
 | 1 | Muehehe | Les deux mains levées, index seulement, bouts des doigts qui se touchent |
-| 2 | Chat Devo | Les deux mains levées, au-dessus de la tête |
+| 2 | Chat qui a peur | Les deux mains levées, au-dessus de la tête |
 | 3 | Chat qui mâche un câble | Les deux mains levées de chaque côté du visage comme pour tenir un câble |
 | 4 | Je vais te frapper | Une main, les quatre doigts repliés en poing |
 | 5 | EHHEHEEEHEEEE | Pouce + auriculaire écartés, rockstar cat |
 | 6 | Chat silencieux (chut) | Index seulement, bout du doigt posé sur la bouche |
-| 7 | Erm ackshuALLY! cat | Index seulement, éloigné du visage |
+| 7 | Chat nerd | Index seulement, éloigné du visage |
 | 8 | Chat choqué/kidnappé | Main qui couvre la bouche |
 | 9 | DONNE-MOI DES SOUS !! | Une paume ouverte, tous les doigts étendus, loin du visage |
 | 10 | Chat regard de côté | Tourne la tête de 15°+ dans un sens ou l'autre |
