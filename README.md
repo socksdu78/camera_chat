@@ -1,80 +1,61 @@
-# Meowmeow cat cam meme detector
+# Meowmeow cat cam — détecteur de mèmes
 
-Point your webcam at yourself, make a face/hand gesture, get a cat meme back in real time. Runs either as a desktop app (OpenCV windows) or entirely in the browser (MediaPipe WASM, no install).
+Pointe ta webcam vers toi, fais un geste ou une expression, et reçois un mème de chat en temps réel. Fonctionne soit en application bureau (fenêtres OpenCV) soit entièrement dans le navigateur (MediaPipe WASM, aucune installation).
 
-Two windows/panes side by side: 
-- **Camera** — your webcam feed with hand landmarks drawn on top, plus a live debug readout in the corner
-- **Meme** — the meme matching whatever gesture you're currently making
+Deux volets côte à côte :
+- **Caméra** — ton flux webcam avec les repères de main superposés, plus un affichage de débogage en direct dans le coin
+- **Mème** — le mème correspondant au geste que tu es en train de faire
 
-## Gestures
+## Gestes
 
-Checked in this order — when a pose could match more than one, the earlier one wins.
+Vérifiés dans cet ordre — quand une pose peut correspondre à plusieurs, le premier l'emporte.
 
-| # | Gesture | How to trigger |
+| # | Geste | Comment le déclencher |
 |---|---|---|
-| 1 | Muehehe | Both hands up, index fingers only, tips touching |
-| 2 | Devo cat | Both hands up, above the top of your head |
-| 3 | Crash out cord chewing kitty | Both hands up beside your face to hold yummy electrical cable |
-| 4 | I will punch you | One hand, all four fingers curled |
-| 5 | EHHEHEEEHEEEE | Thumb + pinky out, rockstar cat |
-| 6 | Shhh silenced cat | Index finger only, tip resting on your mouth |
-| 7 | Erm ackshuALLY! cat | Index finger only, held away from your face |
-| 8 | Shocked/kidnapped cat | Hand cover mouth |
-| 9 | gGIMME MONIE!! | One open palm, all fingers extended, away from your face |
-| 10 | Side eye cat | Turn your head 15°+ either way (real head-pose yaw) |
-| 11 | Pokercat | Default |
-| 12 | Spinny OIIAI cat | You spin!!!! |
+| 1 | Muehehe | Les deux mains levées, index seulement, bouts des doigts qui se touchent |
+| 2 | Chat Devo | Les deux mains levées, au-dessus de la tête |
+| 3 | Chat qui mâche un câble | Les deux mains levées de chaque côté du visage comme pour tenir un câble |
+| 4 | Je vais te frapper | Une main, les quatre doigts repliés en poing |
+| 5 | EHHEHEEEHEEEE | Pouce + auriculaire écartés, rockstar cat |
+| 6 | Chat silencieux (chut) | Index seulement, bout du doigt posé sur la bouche |
+| 7 | Erm ackshuALLY! cat | Index seulement, éloigné du visage |
+| 8 | Chat choqué/kidnappé | Main qui couvre la bouche |
+| 9 | DONNE-MOI DES SOUS !! | Une paume ouverte, tous les doigts étendus, loin du visage |
+| 10 | Chat regard de côté | Tourne la tête de 15°+ dans un sens ou l'autre |
+| 11 | Pokercat | Par défaut |
+| 12 | Chat tournoyant OIIAI | Tu tournes !!!! |
 
+Les images de mèmes se trouvent dans `memes/`. Certains gestes choisissent aléatoirement parmi plusieurs images.
 
-Meme images live in `memes/`. A couple of gestures pick randomly between multiple images.
+## Lancer — navigateur (GitHub Pages)
 
-## Running it — desktop (Python)
+Aucune installation nécessaire. Ouvre simplement l'URL du site et autorise l'accès à la webcam. Les modèles se chargent depuis le CDN MediaPipe de Google au démarrage.
 
-Requires Python 3 and a webcam.
+## Lancer — bureau (Python)
 
-Easiest way: just double-click **`Launch Gesture Meme.command`**. First run takes a minute to set itself up (installs everything automatically), then launches straight away. Every run after that is instant.
+Nécessite Python 3 et une webcam.
 
-**First time opening it:** macOS will warn "cannot be opened because it is from an unidentified developer" — this is normal for any downloaded script, not specific to this one. Right-click the file → **Open** → click **Open** in the dialog that appears. You only need to do this once.
+    python3 -m venv .venv
+    source .venv/bin/activate  # Windows : .venv\Scripts\activate
+    pip install -r requirements.txt
+    python3 gesture_meme.py
 
-Or manually, if you prefer Terminal:
+Appuie sur `q` ou `Esc` dans la fenêtre Caméra pour quitter.
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python3 gesture_meme.py
-```
+## HUD de débogage
 
-Press `q` or `Esc` in the Camera window to quit.
+La fenêtre Caméra affiche toujours un petit indicateur en haut à gauche :
 
-## Running it — browser
+    geste : regard de côté
+    rotation : +18.4°  (side-eye +/-15.0)
 
-No install needed, but the webcam API requires serving over HTTP (opening `index.html` directly as a `file://` URL will not get camera permission). From this folder:
+Utile pour ajuster les seuils de détection en haut de `gesture_meme.py` / `app.js` si un geste se déclenche trop facilement ou pas assez selon ton setup/éclairage.
 
-```bash
-python3 -m http.server 8000
-```
+## Structure du projet
 
-Then open `http://localhost:8000` and allow camera access. Models load from Google's hosted MediaPipe CDN at runtime, so nothing local is needed for the browser version.
-
-## Live debug HUD
-
-The Camera window always shows a small readout in the top-left corner:
-
-```
-gesture: sideEyeCat
-yaw: +18.4 deg  (side-eye thr +/-15.0)
-```
-
-Useful for tuning the detection thresholds at the top of `gesture_meme.py` / `app.js` if a gesture is triggering too easily or not easily enough for your setup/lighting.
-
-## Project layout
-
-```
-gesture_meme.py   desktop version (OpenCV + MediaPipe Python tasks API)
-app.js            browser version (MediaPipe tasks-vision WASM)
-index.html        browser UI shell
-memes/            meme images (+ one video, unused for now)
-models/           MediaPipe .task model files used by the desktop version
-requirements.txt  Python dependencies
-```
+    gesture_meme.py   version bureau (OpenCV + MediaPipe Python tasks API)
+    app.js            version navigateur (MediaPipe tasks-vision WASM)
+    index.html        interface navigateur
+    memes/            images de mèmes (+ une vidéo, inutilisée pour l'instant)
+    models/           fichiers modèles MediaPipe .task pour la version bureau
+    requirements.txt  dépendances Python
